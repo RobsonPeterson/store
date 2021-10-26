@@ -15,6 +15,7 @@ public class ClientTests {
 	    Client client = ClientBuilder.newClient();
 	    WebTarget target = client.target("http://www.mocky.io");
 	    String content = target.path("/v2/52aaf5deee7ba8c70329fb7d").request().get(String.class);
+	    System.out.println(content);
 	    Assert.assertTrue(content.contains("Rua Vergueiro 3185"));
 	}
 }
