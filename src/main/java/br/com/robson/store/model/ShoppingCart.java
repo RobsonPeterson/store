@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 
 //public class ShoppingCart {
@@ -79,6 +80,11 @@ public class ShoppingCart {
 
 	public String toXML() {		
 		return new XStream().toXML(this);
+	}
+
+	public String toJSON() {
+		// TODO Auto-generated method stub
+		return new Gson().toJson(this);
 	}
 
 }
