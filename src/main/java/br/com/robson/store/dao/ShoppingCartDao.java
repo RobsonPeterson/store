@@ -15,18 +15,18 @@ public class ShoppingCartDao {
 	static {
 		Product videogame = new Product(6237, "Videogame 4", 4000, 1);
 		Product esporte = new Product(3467, "Jogo de esporte", 60, 2);
-		ShoppingCart carrinho = new ShoppingCart()
+		ShoppingCart shoppingCart = new ShoppingCart()
 								.adiciona(videogame)
 								.adiciona(esporte)
-								.para("Rua Vergueiro 3185, 8 andar", "S‹o Paulo")
+								.para("Rua Vergueiro 3185, 8 andar", "Curitiba")
 								.setId(1l);
-		banco.put(1l, carrinho);
+		banco.put(1l, shoppingCart);
 	}
 	
-	public void adiciona(ShoppingCart carrinho) {
+	public void adiciona(ShoppingCart shoppingCart) {
 		long id = contador.incrementAndGet();
-		carrinho.setId(id);
-		banco.put(id, carrinho);
+		shoppingCart.setId(id);
+		banco.put(id, shoppingCart);
 	}
 	
 	public ShoppingCart busca(Long id) {
