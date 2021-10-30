@@ -33,7 +33,7 @@ public class ClientTests {
 		
 		Client client = ClientBuilder.newClient();
 	    WebTarget target = client.target("http://localhost:8080");
-	    String content = target.path("/shoppingcart").request().get(String.class);    
+	    String content = target.path("/shoppingcart/1").request().get(String.class);    
 	    ShoppingCart shoppingCart = (ShoppingCart) new XStream().fromXML(content);	    
 	    Assert.assertEquals("Rua Vergueiro 3185, 8 andar", shoppingCart.getRua());
 	}
