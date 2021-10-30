@@ -11,14 +11,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
 
 import com.thoughtworks.xstream.XStream;
 
 import br.com.robson.store.dao.ProjectDao;
-import br.com.robson.store.dao.ShoppingCartDao;
 import br.com.robson.store.model.Project;
-import br.com.robson.store.model.ShoppingCart;
 
 
 @Path("project")
@@ -47,12 +44,5 @@ public class ProjectResource {
 		return Response.ok().build();
 	}
 	
-//	@Path("{id}/product/{productId}")
-//	@DELETE
-//	public Response removeProduct(@PathParam("id") long id, @PathParam("productId") long productId) {
-//		ShoppingCart shoppingCart = new ShoppingCartDao().busca(id);
-//		shoppingCart.remove(productId);
-//		return Response.ok().build();
-//	}
 }
 

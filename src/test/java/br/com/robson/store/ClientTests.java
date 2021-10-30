@@ -1,6 +1,9 @@
 package br.com.robson.store;
 
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -9,6 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.logging.LoggingFeature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,15 +26,19 @@ import junit.framework.Assert;
 
 public class ClientTests {
 	
+	
 	private HttpServer server;
 	private Client client;
 	private WebTarget target;
 	
 	
+	
 	@Before
 	public void startServer() {
 		server = Server.bootServer();
-		this.client = ClientBuilder.newClient();
+		ClientConfig config = new ClientConfig();
+		config.register(new LoggingFeature(Logger.getLogger(getClass().getName()), Level.OFF, LoggingFeature.Verbosity.PAYLOAD_TEXT, 8192));
+		this.client = ClientBuilder.newClient(config);
 	    this.target = client.target("http://localhost:8080");
 	}
 	
