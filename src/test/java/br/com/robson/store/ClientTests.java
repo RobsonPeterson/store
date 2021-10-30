@@ -22,10 +22,15 @@ import junit.framework.Assert;
 public class ClientTests {
 	
 	private HttpServer server;
+	private Client client;
+	private WebTarget target;
+	
 	
 	@Before
 	public void startServer() {
-		server = Server.bootServer();  
+		server = Server.bootServer();
+		this.client = ClientBuilder.newClient();
+	    this.target = client.target("http://localhost:8080");
 	}
 	
 	@After
@@ -35,18 +40,13 @@ public class ClientTests {
 	
 	@Test
 	public void testSeashShoppingCart() {
-		
-		Client client = ClientBuilder.newClient();
-	    WebTarget target = client.target("http://localhost:8080");
 	    String content = target.path("/shoppingcart/1").request().get(String.class);    
 	    ShoppingCart shoppingCart = (ShoppingCart) new XStream().fromXML(content);	    
 	    Assert.assertEquals("Rua Vergueiro 3185, 8 andar", shoppingCart.getRua());
 	}
 	
-	public void testePost() {
-		
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost;8080");
+	@Test
+	public void testePostShoppingCart() {
 		ShoppingCart shoppingCart = new ShoppingCart();
 		shoppingCart.adiciona(new Product(314,  "Tablet", 999, 1));
 		shoppingCart.setRua("Rua Vergueiro");
@@ -55,8 +55,11 @@ public class ClientTests {
 		
 		Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
 		
-		Response response = target.path("/shoppingcart").request().post(entity);
-		Assert.assertEquals("<status>sucesso</status>",response.readEntity(String.class));
-						
+		Response response = target.path("/shoppingcart").request().post(entity);		
+		Assert.assertEquals(201, response.getStatus());
+		String location = response.getHeaderString("Location");
+		String content = client.target(location).request().get(String.class);
+		Assert.assertTrue(content.contains("Tablet"));
+				
 	}
 }

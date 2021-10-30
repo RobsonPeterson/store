@@ -2,7 +2,10 @@ package br.com.robson.store;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
@@ -17,10 +20,14 @@ import junit.framework.Assert;
 public class ProjectTest {
 	
 	private HttpServer server;
+	private Client client;
+	private WebTarget target;
 	
 	@Before
 	public void startServer() {
-		server = Server.bootServer();  
+		server = Server.bootServer();
+		this.client = ClientBuilder.newClient();
+		this.target = client.target("http://localhost:8080");
 	}
 	
 	@After
@@ -30,10 +37,27 @@ public class ProjectTest {
 	
 	@Test
 	public void projectTeste() {
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080");
 		String content = target.path("/project/1").request().get(String.class);
 		Project project = (Project) new XStream().fromXML(content);
 		Assert.assertEquals("Minha loja", project.getName());
 	}
+	
+	
+	@Test
+	public void testProject() {
+		Project project = new Project();
+		project.setName("Java");
+		project.setBeginningYear(2021);
+		String xml = project.toXML();
+		System.out.println(xml);
+		Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
+		System.out.println(entity);
+		Response response = target.path("/project").request().post(entity);
+		Assert.assertEquals(201, response.getStatus());
+		String location = response.getHeaderString("Location");
+		String content = client.target(location).request().get(String.class);
+		Assert.assertTrue(content.contains("Java"));
+	}
+	
+	
 }

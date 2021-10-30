@@ -14,6 +14,9 @@ public class Project {
 		this.beginningYear = beginningYear;
 	}
 
+	public Project() {
+		// TODO Auto-generated constructor stub
+	}
 	public String getName() {
 		return name;
 	}
