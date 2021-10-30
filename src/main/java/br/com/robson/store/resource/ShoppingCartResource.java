@@ -4,6 +4,7 @@ package br.com.robson.store.resource;
 import java.net.URI;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -37,5 +38,14 @@ public class ShoppingCartResource {
 		return Response.created(uri).build();
 		
 	}
+	
+	@Path("{id}/product/{productId}")
+	@DELETE
+	public Response removeProduct(@PathParam("id") long id, @PathParam("productId") long productId) {
+		ShoppingCart shoppingCart = new ShoppingCartDao().busca(id);
+		shoppingCart.remove(productId);
+		return Response.ok().build();
+	}
+	
 }
 

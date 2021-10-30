@@ -1,5 +1,8 @@
 package br.com.robson.store;
 
+import javax.ws.rs.DELETE;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -14,7 +17,9 @@ import org.junit.Test;
 
 import com.thoughtworks.xstream.XStream;
 
+import br.com.robson.store.dao.ShoppingCartDao;
 import br.com.robson.store.model.Project;
+import br.com.robson.store.model.ShoppingCart;
 import junit.framework.Assert;
 
 public class ProjectTest {
@@ -49,15 +54,17 @@ public class ProjectTest {
 		project.setName("Java");
 		project.setBeginningYear(2021);
 		String xml = project.toXML();
-		System.out.println(xml);
 		Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
-		System.out.println(entity);
+		
 		Response response = target.path("/project").request().post(entity);
 		Assert.assertEquals(201, response.getStatus());
 		String location = response.getHeaderString("Location");
 		String content = client.target(location).request().get(String.class);
 		Assert.assertTrue(content.contains("Java"));
 	}
+	
+	
+	
 	
 	
 }
